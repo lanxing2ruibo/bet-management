@@ -1,14 +1,23 @@
 package blues.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
 
 /**
  * @author lanxing  2021-06-26
  */
+@Entity
 public class BetRecord {
+    @Id
+    @Column
     private long id;
+    @Column
     private String user;
+    @Column
     private int money;
+    @Column
     private Date createTime;
     private float income;
     private int result;
