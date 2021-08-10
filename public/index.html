@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>投注管理</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js?r=1'></script>
+    <script src="jquery-3.6.0.min.js"></script>
+    <script></script>
+</head>
+<body>
+    <h1>index page</h1>    
+    <div id="list">
+        <table id="recordList">
+            <tr>
+                <td>income</td>
+                <td>money</td>
+                <td>结果</td>
+                <td>时间</td>
+                <td>用户</td>
+
+            </tr>
+            
+
+        </table>
+    </div>
+
+    <h2>请求输入此次悔恨记录</h2>
+
+    <form>
+        <div><span>income:</span><input value="" id="income" /></div>
+        <div><span>money:</span><input value="" id="money" /></div>
+        <div><span>用户:</span><input value="" id="user" /></div>
+
+        <br/>
+        <div title="submit" onclick="submit()" >提交</div>
+    </form>
+</body>
+<script>
+    function initData(){
+        $.ajax({
+            url:'http://localhost:8080/betRecord/listByUser?user=lanxing',
+            method:"get",
+            success:function(result){
+                console.log(result)
+                for(var i=0;i<result.data.length;i++){
+                    var table = document.getElementById("recordList")
+                    //add tr
+                    var tr = document.createElement("tr");
+                    var obj = result.data[i]
+                    //add td list
+                    var tdIncome = document.createElement("td")
+                    tdIncome.innerHTML = obj.income;                    
+                    tr.appendChild(tdIncome)
+
+                    var td2 = document.createElement("td")
+                    td2.innerHTML = obj.money;
+                    tr.appendChild(td2)
+
+                    var td3 = document.createElement("td")
+                    td3.innerHTML = obj.result;                    
+                    tr.appendChild(td3)
+
+                    var td4 = document.createElement("td")
+                    td4.innerHTML = obj.createTime;                    
+                    tr.appendChild(td4)
+
+                    var td5 = document.createElement("td")
+                    td5.innerHTML = obj.user;                    
+                    tr.appendChild(td5)
+
+
+                    table.appendChild(tr)
+
+                }
+            }
+        })
+    }
+
+    initData()
+
+    function submit(){
+        // alert("submit")
+        var income = $("#income").val()
+        var money = $("#money").val()
+        var user = $("#user").val()
+
+        var param = {
+            income:income,
+            money:money,
+            user:user
+        }
+        // alert(income)
+        $.ajax({
+            url:"http://localhost:8080/betRecord/create",
+            type:"POST",
+            contentType:"application/json",
+            data:JSON.stringify(param),
+            success:function(result){
+                window.location.reload();
+                alert("success")
+            }
+        })
+    }
+</script>
+</html>
