@@ -19,7 +19,9 @@ public class BetRecord {
     private int money;
     @Column
     private Date createTime;
+    @Column
     private float income;
+    @Column
     private int result;
 
     public long getId() {
