@@ -18,23 +18,17 @@ import java.util.List;
 public class BetRecorderServiceImpl implements BetRecordService {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
-
-    @Autowired
     BeRecordCrudRepository beRecordCrudRepository;
 
     @Override
     public BetRecord add(BetRecord model) {
-//        jdbcTemplate.update("insert into bet_record(money,result,income,user,create_time) values(?,?,?,?,?)",
-//                model.getMoney(),model.getResult(),model.getIncome(),model.getUser(),new Date());
         model.setCreateTime(new Date());
         beRecordCrudRepository.save(model);
-
         return model;
     }
 
     @Override
     public List<BetRecord> listByUser(String user) {
-        return jdbcTemplate.query("select * from bet_record where user = ?",new BeanPropertyRowMapper<>(BetRecord.class),user);
+        return beRecordCrudRepository.findByUser(user);
     }
 }
